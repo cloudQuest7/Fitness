@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Login page</title>
+</head>
+<body>
+    <select class="language-selector" title="Select Language">
+        <option>English (UK)</option>
+    </select>
+
+    <div class="container">
+        <h1>Create Account</h1>
+        
+        <div class="social-buttons">
+            <a href="#" class="social-button">
+                <img src="/api/placeholder/24/24" alt="Google icon" />
+                sign up with google
+            </a>
+            <a href="#" class="social-button">
+                <img src="/api/placeholder/24/24" alt="Facebook icon" />
+                sign up with Facebook
+            </a>
+        </div>
+
+        <div class="divider">OR</div>
+
+        <form>
+            <div class="form-group">
+                <input type="text" placeholder="Full Name" required>
+                <i>👤</i>
+            </div>
+            <div class="form-group">
+                <input type="email" placeholder="Email Address" required>
+                <i>✉️</i>
+            </div>
+            <div class="form-group">
+                <input type="password" placeholder="Password" required>
+                <i>👁️</i>
+            </div>
+
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+
+        <div class="login-link">
+            Already have an account? <a href="#">Login here</a>
+        </div>
+    </div>
+</body>
+</html>
