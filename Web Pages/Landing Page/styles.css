@@ -1,0 +1,258 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+:root {
+    --primary-color: #FF5D3A;
+    --text-color: #1A1E2C;
+    --bg-color: #f8f9fa;
+}
+
+body {
+    background-color: var(--bg-color);
+    overflow-x: hidden;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navigation */
+nav {
+    padding: 20px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--text-color);
+    text-decoration: none;
+}
+
+.logo img {
+    width: 32px;
+    height: 32px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary-color);
+}
+
+/* Hero Section */
+.hero {
+    padding-top: 100px;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    width: 50%;
+    padding-right: 50px;
+}
+
+.hero-title {
+    font-size: 64px;
+    line-height: 1.1;
+    color: var(--text-color);
+    margin-bottom: 24px;
+}
+
+.hero-description {
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.get-started-btn {
+    background: var(--primary-color);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 30px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.get-started-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(255, 93, 58, 0.2);
+}
+
+.hero-image {
+    position: absolute;
+    right: -5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 55%;
+    max-width: 700px;
+}
+
+/* Stats Section */
+.stats {
+    margin-top: 48px;
+    display: flex;
+    gap: 48px;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-number {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #666;
+}
+
+.reviews {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 32px;
+}
+
+.review-avatars {
+    display: flex;
+    align-items: center;
+}
+
+.review-avatars img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid white;
+    margin-right: -8px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.rating-star {
+    color: #FFD700;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero-title {
+        font-size: 48px;
+    }
+
+    .hero-image {
+        width: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .hero-content {
+        width: 100%;
+        padding-right: 0;
+        text-align: center;
+    }
+
+    .hero-image {
+        position: relative;
+        width: 100%;
+        right: 0;
+        top: 0;
+        transform: none;
+        margin-top: 48px;
+    }
+
+    .stats {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .reviews {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 36px;
+    }
+
+    .hero-description {
+        font-size: 16px;
+    }
+
+    .stats {
+        gap: 24px;
+    }
+}
+
+/* Background Shapes */
+.bg-shape {
+    position: absolute;
+    background: #f0f2f5;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.shape-1 {
+    width: 500px;
+    height: 500px;
+    top: -100px;
+    right: -100px;
+}
+
+.shape-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    left: -50px;
+}
