@@ -1,0 +1,161 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    background: white;
+}
+
+.container {
+    margin: auto;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    position: relative;
+}
+
+.left-side {
+    width: 45%;
+    background: linear-gradient(to bottom, #E5D5E6 0%, #C3E7E7 100%);
+    position: relative;
+    overflow: hidden;
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+}
+
+.illustration {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    padding: 20px;
+}
+
+.form-container {
+    width: 55%;
+    padding: 60px 80px;
+    margin-left: auto;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.social-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.social-button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-size: 0.9rem;
+    color: #666;
+    background: white;
+    gap: 8px;
+}
+
+.social-button:hover {
+    background: #f5f5f5;
+}
+
+.divider {
+    text-align: center;
+    margin: 2rem 0;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1rem 0;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+    background: transparent;
+}
+
+.form-group input:focus {
+    border-color: #7c7cff;
+}
+
+.form-group i {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    cursor: pointer;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 50px;
+    background: linear-gradient(to right, #E5D5E6, #C3E7E7);
+    color: #333;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: transform 0.3s;
+    margin: 2rem 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+}
+
+.login-link {
+    text-align: center;
+    color: #666;
+}
+
+.login-link a {
+    color: #7c7cff;
+    text-decoration: none;
+    margin-left: 5px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .left-side {
+        width: 100%;
+        height: 300px;
+        border-radius: 0 0 50px 50px;
+    }
+
+    .form-container {
+        width: 100%;
+        padding: 40px 20px;
+    }
+
+    .social-buttons {
+        flex-direction: column;
+    }
+}
