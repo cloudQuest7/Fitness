@@ -1,0 +1,212 @@
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Meditation Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="flex flex-col md:flex-row min-h-screen">
+    <!-- Sidebar -->
+    <div class="w-full md:w-1/5 bg-white p-4 md:p-6 flex md:flex-col justify-between md:justify-start">
+        <div class="flex items-center">
+            <i class="fas fa-pause-circle text-2xl text-black"></i>
+            <span class="ml-2 text-xl font-bold">FITRA</span>
+        </div>
+        <div class="hidden md:flex items-center mb-8">
+            <img alt="User profile picture" class="rounded-full w-12 h-12" height="50" src="https://placehold.co/50x50" width="50"/>
+            <div class="ml-4 hidden md:block">
+                <p class="text-sm text-gray-500">Welcome back</p>
+                <p class="text-lg font-semibold">Angela Yu <span class="text-blue-500">Pro</span></p>
+            </div>
+        </div>
+        <div class="mb-8 hidden md:block">
+            <p class="text-gray-500">Your Level</p>
+            <div class="flex items-center">
+                <span class="text-4xl font-bold">08</span>
+                <img alt="Level graph" class="ml-2" height="20" src="https://placehold.co/50x20" width="50"/>
+            </div>
+        </div>
+        <nav class="flex md:flex-col overflow-x-auto md:space-y-4 space-x-4 md:space-x-0">
+            <a class="flex items-center text-blue-500 min-w-max" href="#">
+                <i class="fas fa-home text-xl"></i>
+                <span class="ml-4 text-lg md:inline hidden">Home</span>
+            </a>
+            <a class="flex items-center text-gray-500 min-w-max" href="#">
+                <i class="fas fa-moon text-xl"></i>
+                <span class="ml-4 text-lg md:inline hidden">Sleep</span>
+            </a>
+            <a class="flex items-center text-gray-500 min-w-max" href="#">
+                <i class="fas fa-spa text-xl"></i>
+                <span class="ml-4 text-lg md:inline hidden">Meditation</span>
+            </a>
+            <a class="flex items-center text-gray-500 min-w-max" href="#">
+                <i class="fas fa-bolt text-xl"></i>
+                <span class="ml-4 text-lg md:inline hidden">Focus</span>
+                <span class="ml-2 bg-red-500 text-white text-xs rounded-full px-2 py-1 hidden md:block">2</span>
+            </a>
+            <a class="flex items-center text-gray-500 min-w-max" href="#">
+                <i class="fas fa-cog text-xl"></i>
+                <span class="ml-4 text-lg md:inline hidden">Settings</span>
+            </a>
+        </nav>
+        <div class="hidden md:block mt-auto">
+            <button class="flex items-center justify-center w-full py-3 bg-blue-500 text-white rounded-lg">
+                <i class="fas fa-plus text-xl"></i>
+                <span class="ml-2">Add new meditation</span>
+            </button>
+        </div>
+    </div>
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:p-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 md:mb-8 space-y-4 md:space-y-0">
+            <h1 class="text-2xl md:text-3xl font-bold">Explore your Meditations.</h1>
+            <div class="flex items-center space-x-4 w-full md:w-auto">
+                <input class="px-4 py-2 border rounded-lg w-full md:w-auto" placeholder="Search for exercise" type="text"/>
+                <i class="fas fa-bell text-xl text-gray-500"></i>
+            </div>
+        </div>
+        <div class="flex space-x-4 mb-8 overflow-x-auto pb-4">
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                    <img alt="All icon" height="30" src="https://placehold.co/30x30" width="30"/>
+                </div>
+                <span class="mt-2 text-sm">All</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-green-200 rounded-full flex items-center justify-center">
+                    <img alt="Sleep icon" height="30" src="https://placehold.co/30x30" width="30"/>
+                </div>
+                <span class="mt-2 text-sm">Sleep</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                    <img alt="Relax icon" height="30" src="https://placehold.co/30x30" width="30"/>
+                </div>
+                <span class="mt-2 text-sm">Relax</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                    <img alt="Happy icon" height="30" src="https://placehold.co/30x30" width="30"/>
+                </div>
+                <span class="mt-2 text-sm">Happy</span>
+            </div>
+            <div class="flex flex-col items-center">
+                <div class="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                    <img alt="Tired icon" height="30" src="https://placehold.co/30x30" width="30"/>
+                </div>
+                <span class="mt-2 text-sm">Tired</span>
+            </div>
+        </div>
+        <div class="mb-6 md:mb-8">
+            <h2 class="text-lg md:text-xl font-semibold">Your routine this week</h2>
+            <p class="text-xl md:text-2xl font-bold">47 Hours</p>
+            <div class="flex flex-wrap items-center gap-4 mt-2">
+                <span class="text-green-500">4 days 8h</span>
+                <span class="text-red-500">3 Days 4h</span>
+            </div>
+        </div>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow">
+                <div class="flex items-center">
+                    <img alt="Very Good Sleep icon" class="w-10 h-10" height="40" src="https://placehold.co/40x40" width="40"/>
+                    <div class="ml-4">
+                        <p class="text-lg font-semibold">Very Good Sleep</p>
+                        <p class="text-gray-500">Sunday</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-lg font-semibold">8 hours</span>
+                    <i class="fas fa-chevron-right ml-4 text-gray-500"></i>
+                </div>
+            </div>
+            <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow">
+                <div class="flex items-center">
+                    <img alt="Not Good icon" class="w-10 h-10" height="40" src="https://placehold.co/40x40" width="40"/>
+                    <div class="ml-4">
+                        <p class="text-lg font-semibold">Not Good</p>
+                        <p class="text-gray-500">Monday</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-lg font-semibold">6 hours</span>
+                    <i class="fas fa-chevron-right ml-4 text-gray-500"></i>
+                </div>
+            </div>
+        </div>
+        <button class="mt-4 px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">See More</button>
+        
+    </div>
+    <!-- Right Sidebar -->
+    <div class="w-full md:w-1/4 bg-white p-4 md:p-6 mt-4 md:mt-0">
+        <div class="space-y-6">
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg md:text-xl font-semibold">Meditation and exercise</h2>
+                    <button class="text-gray-500">All</button>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="flex items-center p-4 bg-green-100 rounded-lg">
+                        <img alt="Stress and relaxation image" class="w-16 h-16 rounded-lg" height="60" src="https://placehold.co/60x60" width="60"/>
+                        <div class="ml-4">
+                            <p class="text-lg font-semibold">Stress and relaxation</p>
+                            <p class="text-gray-500">20 Min exercise</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center p-4 bg-yellow-100 rounded-lg">
+                        <img alt="Sitting and yoga meditation image" class="w-16 h-16 rounded-lg" height="60" src="https://placehold.co/60x60" width="60"/>
+                        <div class="ml-4">
+                            <p class="text-lg font-semibold">Sitting and yoga meditation</p>
+                            <p class="text-gray-500">45 Min exercise</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg md:text-xl font-semibold">Stats</h2>
+                    <button class="text-gray-500">All</button>
+                </div>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow">
+                        <div class="flex items-center">
+                            <img alt="Games and meditation icon" class="w-10 h-10" height="40" src="https://placehold.co/40x40" width="40"/>
+                            <div class="ml-4">
+                                <p class="text-lg font-semibold">Games and meditation</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-semibold">3 hours</span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow">
+                        <div class="flex items-center">
+                            <img alt="Session completions icon" class="w-10 h-10" height="40" src="https://placehold.co/40x40" width="40"/>
+                            <div class="ml-4">
+                                <p class="text-lg font-semibold">Session completions</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-semibold">8 Sessions</span>
+                    </div>
+                    <div class="flex items-center justify-between p-4 bg-white rounded-lg shadow">
+                        <div class="flex items-center">
+                            <img alt="Total duration icon" class="w-10 h-10" height="40" src="https://placehold.co/40x40" width="40"/>
+                            <div class="ml-4">
+                                <p class="text-lg font-semibold">Total duration</p>
+                            </div>
+                        </div>
+                        <span class="text-lg font-semibold">44 min</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="mt-4 w-full py-3 bg-blue-500 text-white rounded-lg">Check all Stats</button>
+    </div>
+</div>
+</body>
+</html>
