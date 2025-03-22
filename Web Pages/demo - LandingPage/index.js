@@ -35,23 +35,28 @@ document.querySelector("#main").addEventListener("click", function(){
 
 });
 })
-
 // Footer brand animation
 const footerBrand = document.querySelector('.brand h1');
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            
             // Smooth fade in animation with GSAP
-            gsap.from(entry.target, {
-                duration: 2,
-                y: 100,
-                opacity: 0,
-                ease: "power3.out",
-                delay: 0.2
-            });
+            gsap.fromTo(entry.target, 
+                {
+                    y: 100,
+                    opacity: 0
+                },
+                {
+                    duration: 2,
+                    y: 0,
+                    opacity: 1,
+                    ease: "power3.out",
+                    delay: 0.2,
+                    // Ensure final state remains
+                    clearProps: "transform"
+                }
+            );
         }
     });
 }, {
@@ -60,5 +65,41 @@ const observer = new IntersectionObserver((entries) => {
 });
 
 observer.observe(footerBrand);
+
+
+// Select all elements with class 'element'
+const elements = document.querySelectorAll(".element");
+
+elements.forEach(function(element) {
+    // Select the image directly within each element
+    const elementImage = element.querySelector('img');
+    
+    element.addEventListener("mouseenter", function() {
+        if (elementImage) {
+            elementImage.style.opacity = 1;
+        }
+    });
+
+    element.addEventListener("mouseleave", function() {
+        if (elementImage) {
+            elementImage.style.opacity = 0;
+        }
+    });
+
+    element.addEventListener("mousemove", function(event) {
+        if (elementImage) {
+            // Get element's bounding rectangle
+            const rect = element.getBoundingClientRect();
+            
+            // Calculate relative mouse position
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            // Update image position with transform for better performance
+            elementImage.style.transform = `translate(${x - 75}px, ${y - 75}px)`;
+        }
+    });
+});
+
 
 
