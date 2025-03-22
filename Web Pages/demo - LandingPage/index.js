@@ -36,3 +36,29 @@ document.querySelector("#main").addEventListener("click", function(){
 });
 })
 
+// Footer brand animation
+const footerBrand = document.querySelector('.brand h1');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            
+            // Smooth fade in animation with GSAP
+            gsap.from(entry.target, {
+                duration: 2,
+                y: 100,
+                opacity: 0,
+                ease: "power3.out",
+                delay: 0.2
+            });
+        }
+    });
+}, {
+    threshold: 0.2,
+    rootMargin: "0px"
+});
+
+observer.observe(footerBrand);
+
+
