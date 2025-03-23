@@ -25,8 +25,23 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-    // Handle login logic here
+    const { email, password } = req.body;
+    // Add your login authentication logic here
+    // For now, just redirect to dashboard
     res.redirect('/dashboard');
+});
+
+// Register routes
+app.post('/register', (req, res) => {
+    const { username, email, password } = req.body;
+    // Add your registration logic here
+    // For now, just redirect to dashboard
+    res.redirect('/dashboard');
+});
+
+// Dashboard route
+app.get('/dashboard', (req, res) => {
+    res.render('dashboard'); 
 });
 
 app.listen(PORT, () => {
