@@ -140,16 +140,53 @@ align-items: center;
     font-size: 9vw;
 }
 
-#heroleft button{
+#heroleft button {
     pointer-events: all;
     padding: .7vw 1vw;
-    font-size: 3vw ;
+    font-size: 3vw;
     margin-top: 2vw;
     background-color: #fff;
     font-family: "kajiro";
     border-radius: 9px;
     border: none;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
 }
+
+#heroleft button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 300%;
+    height: 300%;
+    background: linear-gradient(45deg, #ff3366, #00ff99, #33ccff, #ff99cc);
+    opacity: 0;
+    border-radius: 50%;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+}
+
+#heroleft button:hover::before {
+    opacity: 0.15;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#heroleft button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+    letter-spacing: 1px;
+}
+
+#heroleft button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+}
+
 
 #heroleft{
     min-width:50%;
