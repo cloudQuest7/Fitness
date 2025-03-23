@@ -134,6 +134,46 @@ app.get('/home', async (req, res) => {
     }
 });
 
+// Fitness page route
+app.get('/fitness', async (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+
+    try {
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return res.redirect('/login');
+        }
+
+        res.render('fitness', {
+            user,
+            username: user.username,
+            email: user.email
+        });
+    } catch (error) {
+        console.error('Error accessing fitness page:', error);
+        res.redirect('/home');
+    }
+});
+
+// Add this route to your server.js
+app.get('/setting', async (req, res) => {
+    if (!req.session.userId) {
+        return res.redirect('/login');
+    }
+    try {
+        const user = await User.findById(req.session.userId);
+        if (!user) {
+            return res.redirect('/login');
+        }
+        res.render('setting', { user });
+    } catch (error) {
+        console.error('Error accessing settings:', error);
+        res.redirect('/home');
+    }
+});
+
 // Logout route
 app.post('/logout', (req, res) => {
     req.session.destroy(err => {
