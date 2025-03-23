@@ -1,5 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,800');
 
+body {
+    font-family: 'Poppins', sans-serif;
+}
 
 * {
 	box-sizing: border-box;
@@ -11,14 +14,21 @@ body {
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	font-family: 'Noto Serif Display', serif;
+	font-family: 'Poppins', serif;
 	height: 100vh;
 	margin: -20px 0 50px;
 }
 
 h1 {
-	font-weight: bold;
+	font-weight: 620;
 	margin: 0;
+     
+}
+.sign-in-container h1 {
+    color: #908bdb;
+}
+.sign-up-container h1 {
+    color: #908bdb;
 }
 
 h2 {
@@ -47,7 +57,7 @@ a {
 button {
 	border-radius: 20px;
 	border: 1px solid #DFCAE6;  /* Changed from #FF4B2B */
-    background-color: #DFCAE6;  /* Changed from #FF4B2B */
+    background-color: #908bdb;  /* Changed from #FF4B2B */
     color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
@@ -160,9 +170,9 @@ input {
 }
 
 .overlay {
-	background: #DFCAE6;  /* Changed from #FF416C */
-    background: -webkit-linear-gradient(to right, #DFCAE6, #CAE7E2);  /* Changed gradient colors */
-    background: linear-gradient(to right, #DFCAE6, #CAE7E2);
+	background: #4f44ce;  /* Changed from #FF416C */
+    background: -webkit-linear-gradient(to right, #CAE7E2, #908bdb);  /* Changed gradient colors */
+    background: linear-gradient(to right, #6480ee, #908bdb);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
@@ -216,7 +226,7 @@ input {
 }
 
 .social-container a {
-	border: 1px solid #DDDDDD;
+	border: 1px solid #cbcbce;
 	border-radius: 50%;
 	display: inline-flex;
 	justify-content: center;
