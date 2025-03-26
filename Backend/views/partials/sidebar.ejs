@@ -1,0 +1,43 @@
+<div class="w-full md:w-1/5 bg-white p-4 md:p-6 flex md:flex-col justify-between md:justify-start">
+    <div class="flex items-center">
+        <i class="fas fa-pause-circle text-2xl text-black"></i>
+        <span class="ml-2 text-xl font-bold">FITRA</span>
+    </div>
+    <div class="hidden md:flex items-center mb-8">
+        <img alt="User profile picture" class="rounded-full w-12 h-12" 
+             src="<%= user?.profilePic || 'https://placehold.co/50x50' %>"/>
+        <div class="ml-4 hidden md:block">
+            <p class="text-sm text-gray-500">Welcome back</p>
+            <p class="text-lg font-semibold"><%= user?.username || 'Guest' %> 
+                <span class="text-purple-500">Pro</span>
+            </p>
+        </div>
+    </div>
+    <nav class="flex md:flex-col overflow-x-auto md:space-y-4 space-x-4 md:space-x-0">
+        <a class="flex items-center <%= (activePage === 'home') ? 'text-purple-500' : 'text-gray-500' %> min-w-max" 
+           href="/home">
+            <i class="fas fa-home text-xl"></i>
+            <span class="ml-4 text-lg md:inline hidden">Home</span>
+        </a>
+        <a class="flex items-center <%= path === '/fitness' ? 'text-purple-500' : 'text-gray-500' %> min-w-max" 
+           href="/fitness">
+            <i class="fas fa-dumbbell text-xl"></i>
+            <span class="ml-4 text-lg md:inline hidden">Fitness</span>
+        </a>
+        <a class="flex items-center <%= (activePage === 'meditation') ? 'text-purple-500' : 'text-gray-500' %> min-w-max" 
+           href="/meditation">
+            <i class="fas fa-spa text-xl"></i>
+            <span class="ml-4 text-lg md:inline hidden">Meditation</span>
+        </a>
+        <a class="flex items-center <%= activePage === 'nutrition' ? 'text-purple-500' : 'text-gray-500' %> min-w-max" 
+           href="/nutrition">
+            <i class="fas fa-bolt text-xl"></i>
+            <span class="ml-4 text-lg md:inline hidden">Nutrition</span>
+        </a>
+        <a class="flex items-center <%= activePage === 'settings' ? 'text-purple-500' : 'text-gray-500' %> min-w-max" 
+           href="/settings">
+            <i class="fas fa-cog text-xl"></i>
+            <span class="ml-4 text-lg md:inline hidden">Settings</span>
+        </a>
+    </nav>
+</div>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Meditation - Fitra</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        .meditation-card {
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), var(--bg-image);
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.3s ease;
+        }
+        .meditation-card:hover {
+            transform: translateY(-5px);
+        }
+        .audio-player {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #8B5CF6 0%, #6366F1 100%);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-900 to-indigo-900 text-white min-h-screen">
+    <div class="flex flex-col md:flex-row min-h-screen">
+        <!-- Include sidebar -->
+        <%- include('partials/sidebar', { user: user }) %>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-6 md:p-8">
+            <header class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Find Your Peace</h1>
+                <p class="text-gray-400">Discover calmness through guided meditations and relaxing sounds</p>
+            </header>
+
+            <!-- Featured Meditations -->
+            <section class="mb-12">
+                <h2 class="text-xl font-semibold mb-6">Featured Meditations</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <% if (meditations && meditations.length > 0) { %>
+                        <% meditations.forEach(meditation => { %>
+                            <div class="meditation-card rounded-xl p-6 h-48 flex flex-col justify-between cursor-pointer"
+                                 style="--bg-image: url('<%= meditation.image || '/images/meditation/default.jpg' %>')">
+                                <div class="flex justify-between items-start">
+                                    <div>
+                                        <h3 class="font-semibold text-lg"><%= meditation.title %></h3>
+                                        <span class="text-sm text-gray-300"><%= meditation.category %></span>
+                                    </div>
+                                    <span class="bg-black bg-opacity-50 px-3 py-1 rounded-full text-sm">
+                                        <%= meditation.duration %>
+                                    </span>
+                                </div>
+                                <button class="self-start bg-white bg-opacity-20 hover:bg-opacity-30 
+                                             transition-colors rounded-full p-3">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="col-span-3 text-center text-gray-400">
+                            No meditation sessions available
+                        </div>
+                    <% } %>
+                </div>
+            </section>
+
+            <!-- Music Player Section -->
+            <section class="mb-12">
+                <h2 class="text-xl font-semibold mb-6">Meditation Sounds</h2>
+                <div class="audio-player rounded-xl p-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                        <% const sounds = [
+                            { title: "Rain Sounds", duration: "1:00:00", icon: "fas fa-cloud-rain" },
+                            { title: "Ocean Waves", duration: "45:00", icon: "fas fa-water" },
+                            { title: "Forest Ambience", duration: "1:30:00", icon: "fas fa-tree" },
+                            { title: "Crystal Bowls", duration: "20:00", icon: "fas fa-circle" }
+                        ] %>
+                        
+                        <% sounds.forEach(sound => { %>
+                            <div class="sound-tile flex items-center justify-between p-4 bg-white bg-opacity-5 rounded-lg 
+                                        hover:bg-opacity-10 transition-colors cursor-pointer"
+                                 data-sound="<%= sound.title %>">
+                                <div class="flex items-center">
+                                    <div class="w-10 h-10 rounded-full bg-purple-500 flex items-center justify-center mr-4">
+                                        <i class="<%= sound.icon %>"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-medium"><%= sound.title %></h4>
+                                        <span class="text-sm text-gray-400"><%= sound.duration %></span>
+                                    </div>
+                                </div>
+                                <button class="text-purple-500 hover:text-purple-400">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                            </div>
+                        <% }) %>
+                    </div>
+
+                    <!-- Current Playing -->
+                    <div class="bg-black bg-opacity-30 p-6 rounded-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-semibold">Now Playing</h3>
+                                <p id="now-playing-title" class="text-sm text-gray-400">Select a track</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <button id="shuffle" class="text-gray-400 hover:text-white transition-colors">
+                                    <i class="fas fa-random"></i>
+                                </button>
+                                <button id="prev" class="text-gray-400 hover:text-white transition-colors">
+                                    <i class="fas fa-step-backward"></i>
+                                </button>
+                                <button id="play-pause" class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center 
+                                           hover:bg-purple-600 transition-colors">
+                                    <i class="fas fa-play"></i>
+                                </button>
+                                <button id="next" class="text-gray-400 hover:text-white transition-colors">
+                                    <i class="fas fa-step-forward"></i>
+                                </button>
+                                <button id="repeat" class="text-gray-400 hover:text-white transition-colors">
+                                    <i class="fas fa-repeat"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="relative h-1 bg-gray-700 rounded-full mb-2">
+                            <div class="progress-bar h-full w-0 rounded-full"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-400">
+                            <span id="current-time">0:00</span>
+                            <span id="duration">0:00</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mood Selection -->
+            <section>
+                <h2 class="text-xl font-semibold mb-6">How are you feeling today?</h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                    <% const moods = [
+                        { emoji: "😊", text: "Happy" },
+                        { emoji: "😔", text: "Sad" },
+                        { emoji: "😤", text: "Stressed" },
+                        { emoji: "😴", text: "Tired" },
+                        { emoji: "🤔", text: "Anxious" },
+                        { emoji: "😌", text: "Calm" }
+                    ] %>
+                    
+                    <% moods.forEach(mood => { %>
+                        <button class="p-4 bg-white bg-opacity-5 rounded-xl hover:bg-opacity-10 transition-colors">
+                            <div class="text-3xl mb-2"><%= mood.emoji %></div>
+                            <div class="text-sm"><%= mood.text %></div>
+                        </button>
+                    <% }) %>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="/js/meditation.js"></script>
+</body>
+</html>

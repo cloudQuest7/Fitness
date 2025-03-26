@@ -24,8 +24,26 @@ if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive: true });
 }
 
+// Add this after your existing uploadDir setup
+const meditationDir = path.join(__dirname, 'public', 'images', 'meditation');
+if (!fs.existsSync(meditationDir)) {
+    fs.mkdirSync(meditationDir, { recursive: true });
+    console.log('Created meditation images directory:', meditationDir);
+}
+
+// Add after the meditation directory creation
+try {
+    // Set directory permissions (readable/writable)
+    fs.chmodSync(meditationDir, 0o755);
+    console.log('Set permissions for meditation directory');
+} catch (error) {
+    console.error('⚠️ Error setting directory permissions:', error.message);
+    // Continue running the app even if permissions fail
+}
+
 // Middleware
 app.use(morgan('dev'));
+app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(join(__dirname, "public")));
@@ -36,6 +54,7 @@ app.use(session({
 }));
 
 app.set("view engine", "ejs");
+app.set('views', path.join(__dirname, 'views'));
 
 // Configure multer for file upload
 const storage = multer.diskStorage({
@@ -67,6 +86,19 @@ const upload = multer({
 
 // Add static middleware for serving uploaded files
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+
+// Add this middleware to track current path
+app.use((req, res, next) => {
+    res.locals.path = req.path;
+    next();
+});
+
+// Add this before your routes
+app.use((req, res, next) => {
+    // Extract the current page from the URL
+    res.locals.activePage = req.path.substring(1) || 'home';
+    next();
+});
 
 // Routes
 app.get('/', (req, res) => {
@@ -216,24 +248,59 @@ app.get('/setting', async (req, res) => {
 
 // Add this route with your other routes
 app.get('/yoga', async (req, res) => {
-    if (!req.session.userId) {
-        return res.redirect('/login');
-    }
-
     try {
+        let user = null;
+        if (req.session.userId) {
+            user = await User.findById(req.session.userId);
+        }
+        
+        res.render('yoga', {
+            user: user,
+            activePage: 'yoga'
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.redirect('/login');
+    }
+});
+
+app.get('/session/:id', async (req, res) => {
+    try {
+        if (!req.session.userId) {
+            return res.redirect('/login');
+        }
+
         const user = await User.findById(req.session.userId);
         if (!user) {
             return res.redirect('/login');
         }
 
-        res.render('yoga', {
+        res.render('session', {
             user,
-            username: user.username,
-            email: user.email
+            sessionId: req.params.id
         });
     } catch (error) {
-        console.error('Error accessing yoga page:', error);
-        res.redirect('/fitness');
+        console.error('Error:', error);
+        res.redirect('/yoga');
+    }
+});
+
+app.get('/meditation', async (req, res) => {
+    try {
+        let user = null;
+        if (req.session.userId) {
+            user = await User.findById(req.session.userId);
+        }
+
+        res.render('meditation', {
+            user,
+            meditations: [], // Your meditation data here
+            activePage: 'meditation', // Add this line to fix the error
+            title: 'Meditation - Fitra'
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.redirect('/home');
     }
 });
 
