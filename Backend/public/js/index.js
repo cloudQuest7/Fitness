@@ -101,5 +101,118 @@ elements.forEach(function(element) {
     });
 });
 
+let map;
+let marker;
+let infoWindow;
+
+function initMap() {
+    // Default location (can be anywhere)
+    const defaultLocation = { lat: 20.5937, lng: 78.9629 };
+
+    // Initialize map
+    map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: defaultLocation,
+        styles: [
+            {
+                "featureType": "all",
+                "elementType": "geometry",
+                "stylers": [{"color": "#242f3e"}]
+            },
+            {
+                "featureType": "all",
+                "elementType": "labels.text.fill",
+                "stylers": [{"color": "#746855"}]
+            }
+            // Add more styles as needed
+        ]
+    });
+
+    infoWindow = new google.maps.InfoWindow();
+
+    // Try to get user's location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+
+                // Center map on user's location
+                map.setCenter(pos);
+
+                // Add marker for user's location
+                marker = new google.maps.Marker({
+                    position: pos,
+                    map: map,
+                    title: "Your Location",
+                    animation: google.maps.Animation.DROP
+                });
+
+                // Get and display address
+                getAddress(pos);
+
+                // Setup nearby gyms search
+                document.getElementById('find-gyms').addEventListener('click', () => {
+                    findNearbyGyms(pos);
+                });
+            },
+            () => {
+                handleLocationError(true, infoWindow, map.getCenter());
+            }
+        );
+    } else {
+        handleLocationError(false, infoWindow, map.getCenter());
+    }
+}
+
+function getAddress(location) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ location: location }, (results, status) => {
+        if (status === "OK") {
+            if (results[0]) {
+                document.getElementById('address').textContent = 
+                    `📍 ${results[0].formatted_address}`;
+            }
+        }
+    });
+}
+
+function findNearbyGyms(location) {
+    const service = new google.maps.places.PlacesService(map);
+    service.nearbySearch(
+        {
+            location: location,
+            radius: 1500,
+            type: ["gym"]
+        },
+        (results, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                results.forEach(place => {
+                    new google.maps.Marker({
+                        map: map,
+                        position: place.geometry.location,
+                        title: place.name,
+                        icon: {
+                            url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+                        }
+                    });
+                });
+            }
+        }
+    );
+}
+
+function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(
+        browserHasGeolocation
+            ? "Error: The Geolocation service failed."
+            : "Error: Your browser doesn't support geolocation."
+    );
+    infoWindow.open(map);
+}
+
 
 

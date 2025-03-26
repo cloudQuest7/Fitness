@@ -71,6 +71,18 @@
         </div>
         </div>
 
+        <!-- Geolocation Section -->
+        <div class="map-section">
+            <div class="map-container">
+                <h2>Find Fitness Centers Near You</h2>
+                <div id="map"></div>
+                <div class="location-info">
+                    <div id="address"></div>
+                    <button id="find-gyms">Find Nearby Gyms</button>
+                </div>
+            </div>
+        </div>
+
         <div class="features"></div>
 
         <div class="contributors-section">
@@ -167,5 +179,7 @@
     <script src="https://cdn.jsdelivr.net/gh/automat/controlkit.js@master/bin/controlKit.min.js"></script>
     <script  type="text/javascript"  src="https://unpkg.com/sheryjs/dist/Shery.js"></script> 
     <script src="/js/index.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap" async defer></script>
+    
 </body>
 </html>

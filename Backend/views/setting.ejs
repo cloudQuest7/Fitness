@@ -22,7 +22,11 @@
             <span class="ml-2 text-xl font-bold">FITRA</span>
         </div>
         <div class="hidden md:flex items-center mb-8">
-            <img alt="User profile picture" class="rounded-full w-12 h-12" height="50" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9kZWx8ZW58MHx8MHx8fDA%3D" width="50"/>
+            <img alt="User profile picture" 
+                 class="rounded-full w-12 h-12 sidebar-profile-pic" 
+                 src="<%= user.profilePic || 'default-profile.jpg' %>" 
+                 width="50" 
+                 height="50"/>
             <div class="ml-4 hidden md:block">
                 <p class="text-sm text-gray-500">Welcome back</p>
                 <% if (user) { %>
@@ -70,13 +74,28 @@
         <div class="mb-6">
             <h3 class="text-lg font-semibold">Profile Picture</h3>
             <div class="flex items-center mt-5">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9kZWx8ZW58MHx8MHx8fDA%3D" alt="Profile Picture" class="w-16 h-16 rounded-full border">
-                <div class="ml-4 ">
+                <img id="preview-image" 
+                     src="<%= user.profilePic || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9kZWx8ZW58MHx8MHx8fDA%3D' %>" 
+                     alt="Profile Picture" 
+                     class="w-16 h-16 rounded-full border object-cover">
+                <div class="ml-4">
                     <p class="text-gray-600 mx-4">Upload a PNG or JPEG under 15MB</p>
+                    <input type="file" 
+                           id="profile-upload" 
+                           accept="image/*" 
+                           class="hidden" 
+                           onchange="handleImageUpload(event)">
                 </div>
-                <button class="ml-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 ">Upload</button>
-                <button class="ml-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
+                <button onclick="document.getElementById('profile-upload').click()" 
+                        class="ml-auto bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                    Upload
+                </button>
+                <button onclick="deleteProfilePic()" 
+                        class="ml-2 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+                    Delete
+                </button>
             </div>
+            <div id="upload-status" class="mt-2 text-sm"></div>
         </div>
 
         
@@ -132,5 +151,82 @@
 
 
 </div>
+<script>
+// Replace the existing handleImageUpload function
+async function handleImageUpload(event) {
+    const file = event.target.files[0];
+    const maxSize = 15 * 1024 * 1024; // 15MB
+    const statusDiv = document.getElementById('upload-status');
+    const previewImage = document.getElementById('preview-image');
+    const sidebarImage = document.querySelector('.sidebar-profile-pic'); // Add this class to sidebar image
+
+    // Reset status
+    statusDiv.innerHTML = '';
+
+    // Validate file
+    if (!file) return;
+    if (!file.type.match(/image\/(jpeg|jpg|png)/)) {
+        statusDiv.innerHTML = '<span class="text-red-500">Please select a JPEG or PNG file</span>';
+        return;
+    }
+    if (file.size > maxSize) {
+        statusDiv.innerHTML = '<span class="text-red-500">File size must be less than 15MB</span>';
+        return;
+    }
+
+    // Show loading state
+    statusDiv.innerHTML = '<span class="text-blue-500">Uploading...</span>';
+
+    try {
+        const formData = new FormData();
+        formData.append('profilePic', file);
+
+        const response = await fetch('/api/upload-profile-pic', {
+            method: 'POST',
+            body: formData,
+            credentials: 'same-origin'
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            // Update both preview and sidebar images
+            const imageUrl = URL.createObjectURL(file);
+            previewImage.src = imageUrl;
+            if (sidebarImage) sidebarImage.src = imageUrl;
+            
+            statusDiv.innerHTML = '<span class="text-green-500">Upload successful!</span>';
+        } else {
+            throw new Error(data.message || 'Upload failed');
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        statusDiv.innerHTML = `<span class="text-red-500">${error.message}</span>`;
+    }
+}
+
+async function deleteProfilePic() {
+    const statusDiv = document.getElementById('upload-status');
+    const previewImage = document.getElementById('preview-image');
+
+    try {
+        const response = await fetch('/api/delete-profile-pic', {
+            method: 'DELETE'
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            previewImage.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9kZWx8ZW58MHx8MHx8fDA%3D';
+            statusDiv.innerHTML = '<span class="text-green-500">Profile picture removed</span>';
+        } else {
+            throw new Error(data.message || 'Delete failed');
+        }
+    } catch (error) {
+        console.error('Delete error:', error);
+        statusDiv.innerHTML = `<span class="text-red-500">${error.message}</span>`;
+    }
+}
+</script>
 </body>
 </html>
