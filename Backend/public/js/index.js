@@ -100,119 +100,100 @@ elements.forEach(function(element) {
         }
     });
 });
-
 let map;
 let marker;
-let infoWindow;
 
-function initMap() {
-    // Default location (can be anywhere)
-    const defaultLocation = { lat: 20.5937, lng: 78.9629 };
-
-    // Initialize map
-    map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
-        center: defaultLocation,
-        styles: [
-            {
-                "featureType": "all",
-                "elementType": "geometry",
-                "stylers": [{"color": "#242f3e"}]
-            },
-            {
-                "featureType": "all",
-                "elementType": "labels.text.fill",
-                "stylers": [{"color": "#746855"}]
-            }
-            // Add more styles as needed
-        ]
-    });
-
-    infoWindow = new google.maps.InfoWindow();
-
-    // Try to get user's location
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const pos = {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                };
-
-                // Center map on user's location
-                map.setCenter(pos);
-
-                // Add marker for user's location
-                marker = new google.maps.Marker({
-                    position: pos,
-                    map: map,
-                    title: "Your Location",
-                    animation: google.maps.Animation.DROP
-                });
-
-                // Get and display address
-                getAddress(pos);
-
-                // Setup nearby gyms search
-                document.getElementById('find-gyms').addEventListener('click', () => {
-                    findNearbyGyms(pos);
-                });
-            },
-            () => {
-                handleLocationError(true, infoWindow, map.getCenter());
-            }
-        );
+function initMap(lat, lng) {
+    if (!map) {
+        map = L.map('map').setView([lat, lng], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
     } else {
-        handleLocationError(false, infoWindow, map.getCenter());
+        map.setView([lat, lng], 13);
+    }
+
+    if (marker) {
+        marker.remove();
+    }
+    marker = L.marker([lat, lng]).addTo(map);
+}
+
+function getLocation() {
+    const locationDetails = document.getElementById('location-details');
+    locationDetails.innerHTML = `
+        <div>
+            <i class="fas fa-spinner loading-spinner"></i>
+            <span>Getting your location...</span>
+        </div>
+    `;
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    } else {
+        showError({ code: 'NOT_SUPPORTED' });
     }
 }
 
-function getAddress(location) {
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ location: location }, (results, status) => {
-        if (status === "OK") {
-            if (results[0]) {
-                document.getElementById('address').textContent = 
-                    `📍 ${results[0].formatted_address}`;
-            }
-        }
-    });
+async function showPosition(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    
+    initMap(lat, lng);
+
+    try {
+        const response = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+        );
+        const data = await response.json();
+        
+        document.getElementById('location-details').innerHTML = `
+            <div>
+                <p><i class="fas fa-map-marker-alt location-icon"></i>${data.display_name}</p>
+                <p><i class="fas fa-compass location-icon"></i>${lat.toFixed(6)}, ${lng.toFixed(6)}</p>
+                <p><i class="fas fa-crosshairs location-icon"></i>Accuracy: ${position.coords.accuracy.toFixed(2)}m</p>
+            </div>
+        `;
+    } catch (error) {
+        showError({ code: 'FETCH_ERROR' });
+    }
 }
 
-function findNearbyGyms(location) {
-    const service = new google.maps.places.PlacesService(map);
-    service.nearbySearch(
-        {
-            location: location,
-            radius: 1500,
-            type: ["gym"]
-        },
-        (results, status) => {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                results.forEach(place => {
-                    new google.maps.Marker({
-                        map: map,
-                        position: place.geometry.location,
-                        title: place.name,
-                        icon: {
-                            url: 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-                        }
-                    });
-                });
-            }
-        }
-    );
+function showError(error) {
+    let message;
+    let icon;
+    
+    switch(error.code) {
+        case error.PERMISSION_DENIED:
+            message = "Please allow location access to use this feature.";
+            icon = "user-slash";
+            break;
+        case error.POSITION_UNAVAILABLE:
+            message = "Location information is unavailable.";
+            icon = "map-marked";
+            break;
+        case error.TIMEOUT:
+            message = "Location request timed out.";
+            icon = "clock";
+            break;
+        case 'NOT_SUPPORTED':
+            message = "Geolocation is not supported by your browser.";
+            icon = "exclamation-triangle";
+            break;
+        default:
+            message = "An unknown error occurred.";
+            icon = "question-circle";
+    }
+
+    document.getElementById('location-details').innerHTML = `
+        <div style="color: #ff4d4d;">
+            <i class="fas fa-${icon}"></i>
+            <span>${message}</span>
+        </div>
+    `;
 }
 
-function handleLocationError(browserHasGeolocation, infoWindow, pos) {
-    infoWindow.setPosition(pos);
-    infoWindow.setContent(
-        browserHasGeolocation
-            ? "Error: The Geolocation service failed."
-            : "Error: Your browser doesn't support geolocation."
-    );
-    infoWindow.open(map);
-}
-
-
-
+// Initialize with default location (Mumbai)
+document.addEventListener('DOMContentLoaded', () => {
+    initMap(19.0760, 72.8777);
+});
