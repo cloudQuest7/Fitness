@@ -21,7 +21,7 @@ class AudioPlayer {
         this.isPlaying = false;
         this.tracks = {
             "Rain Sounds": "/audio/meditation/Zack.mp3",
-            "Ocean Waves": "/audio/meditation/lofi.mp3",
+            "Ocean Waves": "/audio/meditation/passenger.mp3",
             "Forest Ambience": "/audio/meditation/Ligaya.mp3",
             "Crystal Bowls": "/audio/meditation/dandelions.mp3"
         };
