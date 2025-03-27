@@ -21,6 +21,15 @@
 - **Interactive Features**
   - AI Fitness Assistant
   - Gamified experience
+ 
+  - store using info from setting to DB
+  - change existing user password
+  - (home page)
+  - add video and music
+  - meditation page
+  - landing page brush up
+  - Feturess
+    
 
 ## 🚀 Getting Started
 
