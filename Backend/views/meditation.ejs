@@ -151,6 +151,10 @@
             background: linear-gradient(135deg, #2D46B9, #F13C77);
         }
 
+        .image-error img {
+            opacity: 0.5;
+        }
+
         /* Player controls enhancements */
         .player-controls button {
             transition: all 0.2s ease;
@@ -241,7 +245,7 @@
                             title: 'Deep Sleep', 
                             author: 'Sleep Guide',
                             duration: '30 min', 
-                            image: '/images/meditation/sleep.jpg',
+                            image: '/images/meditation/cats.jpg',
                             audio: '/audio/meditation/Zack.mp3',
                             gradient: ['#2D46B9', '#F13C77']
                         },
@@ -250,7 +254,7 @@
                             title: 'Morning Clarity', 
                             author: 'Mindfulness Expert',
                             duration: '15 min', 
-                            image: '/images/meditation/Blop.jpg',
+                            image: '/images/meditation/blop.jpg',
                             audio: '/audio/meditation/Ligaya.mp3',
                             gradient: ['#1ED760', '#0D8744']
                         },
@@ -348,13 +352,15 @@
             <div class="h-full flex flex-col">
                 <div class="flex-1">
                     <h3 class="text-lg font-semibold mb-4">Now Playing</h3>
+                    <!-- Replace the existing right sidebar image container code with this: -->
                     <div class="aspect-square mb-4 rounded-lg overflow-hidden">
                         <div id="current-meditation-image-container" class="relative w-full h-full">
                             <div class="absolute inset-0 image-placeholder"></div>
                             <img id="current-meditation-image" 
-                                src="/images/meditation/default.jpg" 
+                                src="/images/meditation/default-meditation.jpg" 
                                 alt="Current meditation"
-                                class="w-full h-full object-cover relative z-10"/>
+                                class="w-full h-full object-cover relative z-10"
+                                onerror="this.onerror=null; this.src='/images/meditation/default-meditation.jpg'; this.parentElement.classList.add('image-error')"/>
                         </div>
                     </div>
                     <h4 id="current-meditation-title" class="font-semibold">Select a meditation</h4>

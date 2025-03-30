@@ -336,3 +336,22 @@ document.addEventListener('DOMContentLoaded', function() {
         loadTrack: loadTrack
     };
 });
+
+// Add this function to your meditation.js
+function updateMeditationImage(imageUrl) {
+    const imageElement = document.getElementById('current-meditation-image');
+    const container = document.getElementById('current-meditation-image-container');
+    
+    // Remove error state if it exists
+    container.classList.remove('image-error');
+    
+    // Set new image source
+    imageElement.src = imageUrl || '/images/meditation/default-meditation.jpg';
+    
+    // Add error handling
+    imageElement.onerror = function() {
+        this.onerror = null;
+        this.src = '/images/meditation/default-meditation.jpg';
+        container.classList.add('image-error');
+    };
+}

@@ -8,16 +8,17 @@ import User from './models/user.js';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import meditationRoutes from './routes/meditation.js';
 
 // Add these lines right after imports to set up __dirname equivalent
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 // Then your directory setup code
-const meditationImagesDir = path.join(__dirname, 'public', 'images', 'meditation');
-if (!fs.existsSync(meditationImagesDir)) {
-    fs.mkdirSync(meditationImagesDir, { recursive: true });
-}
+// const meditationImagesDir = path.join(__dirname, 'public', 'images', 'meditation');
+// if (!fs.existsSync(meditationImagesDir)) {
+//     fs.mkdirSync(meditationImagesDir, { recursive: true });
+// }
 
 // Add after your imports and before routes
 const recipes = [
@@ -64,28 +65,28 @@ connectDB();
 const app = express();
 const PORT = 3000;
 
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, 'public', 'uploads');
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+// // Ensure uploads directory exists
+// const uploadDir = path.join(__dirname, 'public', 'uploads');
+// if (!fs.existsSync(uploadDir)) {
+//     fs.mkdirSync(uploadDir, { recursive: true });
+// }
 
-// Add this after your existing uploadDir setup
-const meditationDir = path.join(__dirname, 'public', 'images', 'meditation');
-if (!fs.existsSync(meditationDir)) {
-    fs.mkdirSync(meditationDir, { recursive: true });
-    console.log('Created meditation images directory:', meditationDir);
-}
+// // Add this after your existing uploadDir setup
+// const meditationDir = path.join(__dirname, 'public', 'images', 'meditation');
+// if (!fs.existsSync(meditationDir)) {
+//     fs.mkdirSync(meditationDir, { recursive: true });
+//     console.log('Created meditation images directory:', meditationDir);
+// }
 
-// Add after the meditation directory creation
-try {
-    // Set directory permissions (readable/writable)
-    fs.chmodSync(meditationDir, 0o755);
-    console.log('Set permissions for meditation directory');
-} catch (error) {
-    console.error('⚠️ Error setting directory permissions:', error.message);
-    // Continue running the app even if permissions fail
-}
+// // Add after the meditation directory creation
+// try {
+//     // Set directory permissions (readable/writable)
+//     fs.chmodSync(meditationDir, 0o755);
+//     console.log('Set permissions for meditation directory');
+// } catch (error) {
+//     console.error('⚠️ Error setting directory permissions:', error.message);
+//     // Continue running the app even if permissions fail
+// }
 
 // Ensure recipes directory exists
 const recipesDir = path.join(__dirname, 'public', 'images', 'recipes');
@@ -104,51 +105,6 @@ app.use('/images/recipes', (req, res, next) => {
     next();
 });
 
-// Replace the existing meditation image middleware with this:
-app.use('/images/meditation', (req, res, next) => {
-    const imagePath = path.join(__dirname, 'public', req.url);
-    const defaultPath = path.join(__dirname, 'public', 'images', 'meditation', 'default.jpg');
-    
-    if (!fs.existsSync(imagePath)) {
-        if (fs.existsSync(defaultPath)) {
-            res.sendFile(defaultPath);
-        } else {
-            res.status(404).send('Image not found');
-        }
-        return;
-    }
-    next();
-});
-
-// Add after your existing middleware
-app.use('/images/meditation', (req, res, next) => {
-    const imagePath = path.join(__dirname, 'public', req.url);
-    if (!fs.existsSync(imagePath)) {
-        // Use gradient background if image doesn't exist
-        next();
-        return;
-    }
-    next();
-});
-
-// Add this route before your other routes
-app.get('/images/placeholder.png', (req, res) => {
-    const placeholderPath = path.join(__dirname, 'public', 'images', 'placeholder.png');
-    
-    // If placeholder doesn't exist, send a base64 encoded minimal image
-    if (!fs.existsSync(placeholderPath)) {
-        const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
-        const img = Buffer.from(base64Image, 'base64');
-        res.writeHead(200, {
-            'Content-Type': 'image/png',
-            'Content-Length': img.length
-        });
-        res.end(img);
-        return;
-    }
-    
-    res.sendFile(placeholderPath);
-});
 
 // Middleware
 app.use(morgan('dev'));
@@ -644,25 +600,25 @@ app.delete('/api/meal-plan', async (req, res) => {
     }
 });
 
-app.get('/meditation/player/:category', (req, res) => {
-    const category = req.params.category;
-    const meditationData = {
-        category: category.charAt(0).toUpperCase() + category.slice(1),
-        duration: '15:00',
-        currentSession: 1,
-        totalSessions: 10
-    };
-    res.render('meditationPlayer', meditationData);
-});
+// app.get('/meditation/player/:category', (req, res) => {
+//     const category = req.params.category;
+//     const meditationData = {
+//         category: category.charAt(0).toUpperCase() + category.slice(1),
+//         duration: '15:00',
+//         currentSession: 1,
+//         totalSessions: 10
+//     };
+//     res.render('meditationPlayer', meditationData);
+// });
 
-app.use('/videos/meditation', (req, res, next) => {
-    const videoPath = path.join(__dirname, 'public', req.url);
-    if (!fs.existsSync(videoPath)) {
-        res.status(404).send('Video not found');
-        return;
-    }
-    next();
-});
+// app.use('/videos/meditation', (req, res, next) => {
+//     const videoPath = path.join(__dirname, 'public', req.url);
+//     if (!fs.existsSync(videoPath)) {
+//         res.status(404).send('Video not found');
+//         return;
+//     }
+//     next();
+// });
 
 // Replace your existing meditation images middleware with this
 app.use('/images/meditation', (req, res, next) => {
@@ -690,6 +646,10 @@ app.use('/images/meditation', (req, res, next) => {
     // If image exists, continue
     next();
 });
+
+// In your main app.js, make sure the static middleware comes AFTER your route:
+app.use('/meditation', meditationRoutes);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
