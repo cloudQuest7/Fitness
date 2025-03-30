@@ -19,14 +19,14 @@
   - Fitness goals
 
 - **Interactive Features**
-  - AI Fitness Assistant
+  - ✅AI Fitness Assistant
   - Gamified experience
  
   - store using info from setting to DB
   - change existing user password
   - (home page)
   - add video and music
-  - meditation page
+  - ✅meditation page
   - landing page brush up
   - Feturess
     
