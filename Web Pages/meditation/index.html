@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fitra - Yoga & Fitness</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Island+Moments&family=Josefin+Slab&family=Kaisei+HarunoUmi&family=Inter:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+        padding: 0;
+      }
+
+      .container {
+        width: 100%;
+        background-color: #fff;
+        overflow: hidden;
+      }
+
+      .content-wrapper {
+        max-width: 1440px;
+        margin: 0 auto;
+        width: 100%;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 40px;
+      }
+
+      .logo {
+        font-family: "Island Moments", cursive;
+        font-size: 48px;
+      }
+
+      .nav-menu {
+        display: flex;
+        gap: 40px;
+      }
+
+      .nav-item {
+        font-family: "Josefin Slab", serif;
+        font-size: 29px;
+        cursor: pointer;
+      }
+
+      .hero-section {
+        position: relative;
+      }
+
+      .hero-content {
+        text-align: center;
+        margin-bottom: 20px; /* Reduced from 40px */
+        padding: 20px 40px; /* Reduced top/bottom padding from 40px */
+      }
+
+      .hero-title, .hero-subtitle {
+        font-family: "Inter", sans-serif;
+        font-size: 50px;
+        text-align: center;
+      }
+
+      .hero-subtitle {
+        font-family: "Inter", sans-serif;
+        font-size: 50px;
+      }
+
+      .highlight {
+        background-color: #5ad668;
+        padding: 4px 15px;
+        border-radius: 30px;
+        color: #fff;
+        font-size: 60px;
+        margin-left: 10px;
+      }
+
+      .cta-button {
+        background-color: #25186f;
+        color: #f8eded;
+        font-family: "Inter", sans-serif;
+        font-size: 24px;
+        padding: 15px 40px;
+        border-radius: 20px;
+        margin-top: 20px;
+        cursor: pointer;
+        border: none;
+        display: inline-block;
+      }
+
+      .cta-button:hover {
+        background-color: #5a3fd3;
+      }
+
+      /* Purple background for the entire bottom section */
+      .purple-background {
+        background-color: #aea0ff;
+        width: 100vw; /* Full viewport width */
+        height: 400px;
+        position: relative;
+        margin-top: 0px; /* Changed from 40px to 0px */
+        left: 50%;
+        right: 50%;
+        margin-left: -50vw;
+        margin-right: -50vw;
+      }
+      
+      /* Quote section styling */
+      .quote-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 10;
+      }
+
+      .quote-content {
+        max-width: 1440px;
+        margin: 0 auto;
+        position: relative;
+        height: 100%;
+      }
+
+      .quote-left {
+        position: absolute;
+        left: 40px;
+        top: 40px;
+        width: 45%;
+      }
+
+      .quote-right {
+        position: absolute;
+        right: 40px;
+        top: 80px;
+        width: 35%;
+        text-align: right;
+      }
+
+      .quote-text {
+        font-size: 24px;
+        max-width: 400px;
+      }
+
+      .quote-attribution {
+        font-style: italic;
+        text-align: right;
+      }
+      
+      .quote-attribution p {
+        font-size: 20px;
+        margin-bottom: 5px;
+      }
+      
+      .quote-author {
+        font-weight: bold;
+        font-size: 20px;
+        display: block;
+      }
+      
+      .quote-number {
+        font-size: 48px;
+        color: #4d22c6;
+        font-weight: bold;
+        font-family: "Inter", sans-serif;
+        margin-bottom: 10px;
+      }
+
+      .gradient-circle-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 400px;
+        max-width: 1440px;
+        margin: 0 auto;
+      }
+
+      /* Animation keyframes */
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+          opacity: 0.9;
+        }
+        50% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 0.9;
+        }
+      }
+
+      @keyframes colorShift {
+        0% {
+          background: radial-gradient(
+            circle at center,
+            #d146de 0%,
+            #c683df 30%,
+            #da9be9 50%,
+            #dcbbec 70%,
+            #e2cae9 85%,
+            #fff 100%
+          );
+        }
+        50% {
+          background: radial-gradient(
+            circle at center,
+            #9e5adc 0%,
+            #bb76e8 30%,
+            #c988ec 50%,
+            #d7b0f0 70%,
+            #e5ccf2 85%,
+            #fff 100%
+          );
+        }
+        100% {
+          background: radial-gradient(
+            circle at center,
+            #d146de 0%,
+            #c683df 30%,
+            #da9be9 50%,
+            #dcbbec 70%,
+            #e2cae9 85%,
+            #fff 100%
+          );
+        }
+      }
+
+      @keyframes ripple {
+        0% {
+          transform: translate(-50%, -50%) scale(0.8);
+          opacity: 1;
+        }
+        100% {
+          transform: translate(-50%, -50%) scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      /* Updated gradient circle with animations */
+      .gradient-circle {
+        position: absolute;
+        width: 395px;
+        height: 362px;
+        background: radial-gradient(
+          circle at center,
+          #d146de 0%,
+          #c683df 30%,
+          #da9be9 50%,
+          #dcbbec 70%,
+          #e2cae9 85%,
+          #fff 100%
+        );
+        border-radius: 50%;
+        animation: pulse 4s ease-in-out infinite, colorShift 8s ease-in-out infinite;
+        position: relative;
+      }
+
+      /* Layered circles for ripple effect */
+      .gradient-circle::before,
+      .gradient-circle::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        z-index: -1;
+      }
+
+      .gradient-circle::before {
+        width: 110%;
+        height: 110%;
+        background: rgba(209, 70, 222, 0.3);
+        animation: ripple 3s linear infinite;
+      }
+
+      .gradient-circle::after {
+        width: 120%;
+        height: 120%;
+        background: rgba(209, 70, 222, 0.2);
+        animation: ripple 3s linear infinite 1.5s;
+      }
+
+      .image-gallery {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0; /* Reduced from 40px */
+        padding: 0 40px;
+        max-width: 1440px;
+        margin: 20px auto; /* Reduced from 40px */
+      }
+
+      .registration-count {
+        font-family: "Inter", sans-serif;
+        font-size: 36px;
+        position: absolute;
+        right: 40px;
+        top: 40%;
+      }
+      
+      .ellipse-image {
+        position: absolute;
+        width: 600px;
+        height: 550px;
+        object-fit: cover;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5; /* Ensure the image is above the gradient circle */
+      }
+
+      /* New meditation button styles */
+      .button-container {
+        position: relative;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+      }
+
+      .meditation-button {
+        position: relative;
+        padding: 18px 36px;
+        font-size: 20px;
+        color: #fff;
+        background: linear-gradient(135deg, #8d6fc5, #c36ed4, #38183e);
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 15px rgba(122, 58, 142, 0.7),
+                    0 0 30px rgba(34, 6, 45, 0.5),
+                    0 0 45px rgba(7, 3, 8, 0.3);
+        outline: none;
+        z-index: 1;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .meditation-button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+        transition: transform 0.5s ease, opacity 0.5s ease;
+        z-index: -1;
+      }
+
+      .meditation-button:hover {
+        box-shadow: 0 0 20px rgba(86, 50, 152, 0.9),
+                    0 0 40px rgba(213, 109, 215, 0.7),
+                    0 0 60px rgba(255, 175, 123, 0.5);
+        transform: translateY(-3px);
+      }
+
+      .meditation-button:hover::before {
+        transform: translate(-50%, -50%) scale(3);
+        opacity: 0.3;
+      }
+
+      .glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        border-radius: 50px;
+        filter: blur(20px);
+        background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+        opacity: 0.4;
+        z-index: -2;
+        animation: pulse 2s infinite;
+      }
+
+      .button-ripple {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 2s linear infinite;
+        opacity: 0;
+      }
+
+      .message {
+        position: absolute;
+        color: white;
+        font-size: 18px;
+        opacity: 0;
+        top: -40px;
+        transition: opacity 0.5s ease, top 0.5s ease;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        font-style: italic;
+      }
+
+      .button-container:hover .message {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (max-width: 991px) {
+        .nav-menu {
+          display: none;
+        }
+
+        .hero-title,
+        .hero-subtitle {
+          font-size: 48px;
+        }
+
+        .highlight {
+          font-size: 72px;
+        }
+
+        .image-gallery {
+          flex-direction: column;
+          gap: 20px;
+        }
+        
+        .quote-right {
+          top: 250px;
+          left: 40px;
+          right: auto;
+          text-align: left;
+        }
+        
+        .quote-attribution {
+          text-align: left;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .header {
+          padding: 10px;
+        }
+
+        .logo {
+          font-size: 36px;
+        }
+
+        .register-button {
+          padding: 5px 15px;
+        }
+
+        .register-text {
+          font-size: 18px;
+        }
+
+        .hero-title,
+        .hero-subtitle {
+          font-size: 36px;
+        }
+
+        .highlight {
+          font-size: 48px;
+          padding: 8px 20px;
+        }
+
+        .gradient-circle {
+          width: 300px;
+          height: 267px;
+        }
+
+        .quote-text {
+          font-size: 20px;
+          max-width: 250px;
+        }
+        
+        .quote-right {
+          width: 80%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="content-wrapper">
+        <header class="header">
+          <h1 class="logo">Fitra</h1>
+        </header>
+
+        <main class="hero-section">
+          <section class="hero-content">
+            <h2 class="hero-title">Get better peace of<span class="highlight">mind</span></h2>
+            
+            <!-- Meditation button replacing "Start Now" -->
+            <div class="button-container">
+              <button class="meditation-button" id="meditationButton">Enter the Meditation Universe</button>
+              <div class="glow"></div>
+              
+            </div>
+          </section>
+        </main>
+      </div>
+      
+
+      <div class="purple-background">
+        <div class="gradient-circle-container">
+          <div class="gradient-circle"></div>
+          <img 
+            src="./images/meditation_logo.png" 
+            alt="Yoga Pose" 
+            class="ellipse-image"
+          />
+          
+          
+          <div class="quote-container">
+            <div class="quote-content">
+              <div class="quote-left">
+                <h3 class="quote-number">#01</h3>
+                <p class="quote-text">
+                  Be still. The quieter you become, the more you can hear.
+                </p>
+              </div>
+              
+              <div class="quote-right">
+                <blockquote class="quote-attribution">
+                  <p>Yoga is the journey of the self, through the self, to the self.</p>
+                  <cite class="quote-author">-Bhagavad Gita</cite>
+                </blockquote>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-wrapper">
+        <div class="image-gallery">
+         
+        </div>
+      </div>
+    </div>
+    
+    <!-- Audio element for the hover sound -->
+    <audio id="hoverSound" preload="auto">
+      <source src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" type="audio/mpeg">
+    </audio>
+    
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const button = document.getElementById('meditationButton');
+        const message = document.getElementById('message');
+        const buttonContainer = document.querySelector('.button-container');
+        let audioContext;
+        let whisperNode;
+        
+        // Synthetic sound generation function
+        function createCelestialSound() {
+          if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          
+          // Create oscillator for the hum sound
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = 'sine';
+          oscillator.frequency.setValueAtTime(140, audioContext.currentTime); // Low frequency for deep hum
+          
+          // Create gain node for volume control and fade in/out
+          const gainNode = audioContext.createGain();
+          gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+          gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.5);
+          gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3);
+          
+          // Add reverb-like effect with convolver node
+          const convolver = audioContext.createConvolver();
+          
+          // Create delay for echo effect
+          const delay = audioContext.createDelay(5.0);
+          delay.delayTime.value = 0.3;
+          
+          const delayGain = audioContext.createGain();
+          delayGain.gain.value = 0.4;
+          
+          // Connect nodes
+          oscillator.connect(gainNode);
+          gainNode.connect(delay);
+          delay.connect(delayGain);
+          delayGain.connect(delay); // Feedback loop for echo
+          gainNode.connect(audioContext.destination);
+          delayGain.connect(audioContext.destination);
+          
+          oscillator.start();
+          oscillator.stop(audioContext.currentTime + 3);
+          
+          return { oscillator, gainNode };
+        }
+        
+        // Function to create synthetic whisper
+        function createWhisper() {
+          if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          
+          // White noise for whisper effect
+          const whisperNode = audioContext.createBufferSource();
+          const bufferSize = audioContext.sampleRate * 2;
+          const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
+          const data = buffer.getChannelData(0);
+          
+          // Fill buffer with noise
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = Math.random() * 2 - 1;
+          }
+          
+          whisperNode.buffer = buffer;
+          
+          // Create bandpass filter for whisper-like sound
+          const whisperFilter = audioContext.createBiquadFilter();
+          whisperFilter.type = 'bandpass';
+          whisperFilter.frequency.value = 800;
+          whisperFilter.Q.value = 0.5;
+          
+          // Create gain node for volume
+          const whisperGain = audioContext.createGain();
+          whisperGain.gain.setValueAtTime(0, audioContext.currentTime);
+          whisperGain.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.3); // Very quiet
+          whisperGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3);
+          
+          // Connect whisper nodes
+          whisperNode.connect(whisperFilter);
+          whisperFilter.connect(whisperGain);
+          whisperGain.connect(audioContext.destination);
+          
+          return { whisperNode, whisperGain };
+        }
+        
+        // Create ripple effect
+        function createRipple(event) {
+          const ripple = document.createElement('div');
+          ripple.classList.add('button-ripple');
+          buttonContainer.appendChild(ripple);
+          
+          const rect = button.getBoundingClientRect();
+          const size = Math.max(rect.width, rect.height);
+          
+          ripple.style.width = ripple.style.height = `${size}px`;
+          ripple.style.left = `${event.clientX - rect.left - size/2}px`;
+          ripple.style.top = `${event.clientY - rect.top - size/2}px`;
+          
+          setTimeout(() => {
+            ripple.remove();
+          }, 2000);
+        }
+        
+        button.addEventListener('mouseover', function(event) {
+          // Play the celestial sound
+          const sound = createCelestialSound();
+          
+          // Play the whisper after a short delay
+          setTimeout(() => {
+            const whisper = createWhisper();
+            whisper.whisperNode.start();
+            whisper.whisperNode.stop(audioContext.currentTime + 3);
+          }, 500);
+          
+          // Show the message
+          message.style.opacity = '1';
+          message.style.top = '-60px';
+          
+          // Create ripple effect
+          createRipple(event);
+        });
+        
+        button.addEventListener('mouseout', function() {
+          // Hide the message
+          message.style.opacity = '0';
+          message.style.top = '-40px';
+        });
+        
+        button.addEventListener('click', function(event) {
+          // Create a stronger ripple effect on click
+          createRipple(event);
+          
+          // Play a more pronounced sound
+          const sound = createCelestialSound();
+          const gainNode = sound.gainNode;
+          gainNode.gain.cancelScheduledValues(audioContext.currentTime);
+          gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+          gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.5);
+          gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3);
+        });
+      });
+      
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="tElQRgkR0AXJ2XdZCwUVW";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+ 
+  </body>
+</html>
