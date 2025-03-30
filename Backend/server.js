@@ -65,11 +65,12 @@ connectDB();
 const app = express();
 const PORT = 3000;
 
-// // Ensure uploads directory exists
-// const uploadDir = path.join(__dirname, 'public', 'uploads');
-// if (!fs.existsSync(uploadDir)) {
-//     fs.mkdirSync(uploadDir, { recursive: true });
-// }
+
+//lets user to upload files to the server
+const uploadDir = path.join(__dirname, 'public', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
 // // Add this after your existing uploadDir setup
 // const meditationDir = path.join(__dirname, 'public', 'images', 'meditation');
@@ -116,6 +117,14 @@ app.use(session({
     secret: 'secret-key',
     resave: false,
     saveUninitialized: false
+}));
+
+app.use(express.static('public', {
+    setHeaders: (res, path, stat) => {
+        if (path.endsWith('.js')) {
+            res.set('Content-Type', 'text/javascript');
+        }
+    }
 }));
 
 app.set("view engine", "ejs");
@@ -441,11 +450,12 @@ app.delete('/api/delete-profile-pic', async (req, res) => {
 
 // Logout route
 app.post('/logout', (req, res) => {
-    req.session.destroy(err => {
+    req.session.destroy((err) => {
         if (err) {
-            console.error('Logout error:', err);
+            return res.status(500).json({ message: 'Could not log out' });
         }
-        res.redirect('/login');
+        res.clearCookie('connect.sid'); // Clear the session cookie
+        res.redirect('/'); // Redirect to landing page
     });
 });
 
@@ -600,27 +610,7 @@ app.delete('/api/meal-plan', async (req, res) => {
     }
 });
 
-// app.get('/meditation/player/:category', (req, res) => {
-//     const category = req.params.category;
-//     const meditationData = {
-//         category: category.charAt(0).toUpperCase() + category.slice(1),
-//         duration: '15:00',
-//         currentSession: 1,
-//         totalSessions: 10
-//     };
-//     res.render('meditationPlayer', meditationData);
-// });
 
-// app.use('/videos/meditation', (req, res, next) => {
-//     const videoPath = path.join(__dirname, 'public', req.url);
-//     if (!fs.existsSync(videoPath)) {
-//         res.status(404).send('Video not found');
-//         return;
-//     }
-//     next();
-// });
-
-// Replace your existing meditation images middleware with this
 app.use('/images/meditation', (req, res, next) => {
     const imagePath = path.join(__dirname, 'public', req.url);
     const defaultPath = path.join(__dirname, 'public', 'images', 'meditation', 'default.jpg');
@@ -642,12 +632,9 @@ app.use('/images/meditation', (req, res, next) => {
             });
         }
     }
-    
-    // If image exists, continue
     next();
 });
 
-// In your main app.js, make sure the static middleware comes AFTER your route:
 app.use('/meditation', meditationRoutes);
 app.use(express.static(path.join(__dirname, 'public')));
 
