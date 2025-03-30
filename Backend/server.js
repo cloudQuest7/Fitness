@@ -9,14 +9,60 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
+// Add these lines right after imports to set up __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Then your directory setup code
+const meditationImagesDir = path.join(__dirname, 'public', 'images', 'meditation');
+if (!fs.existsSync(meditationImagesDir)) {
+    fs.mkdirSync(meditationImagesDir, { recursive: true });
+}
+
+// Add after your imports and before routes
+const recipes = [
+    {
+        id: 1,
+        name: "Oatmeal Bowl",
+        calories: 350,
+        protein: 12,
+        carbs: 56,
+        fats: 8,
+        time: "15 min",
+        image: "/images/recipes/oatmeal.jpg",
+        category: "breakfast",
+        description: "Healthy oatmeal with fruits and nuts"
+    },
+    {
+        id: 2,
+        name: "Grilled Chicken Salad",
+        calories: 420,
+        protein: 35,
+        carbs: 12,
+        fats: 28,
+        time: "20 min",
+        image: "/images/recipes/chicken-salad.jpg",
+        category: "lunch",
+        description: "Fresh salad with grilled chicken breast"
+    },
+    {
+        id: 3,
+        name: "Salmon with Quinoa",
+        calories: 480,
+        protein: 42,
+        carbs: 38,
+        fats: 22,
+        time: "25 min",
+        image: "/images/recipes/salmon-quinoa.jpg",
+        category: "dinner",
+        description: "Grilled salmon with quinoa and vegetables"
+    }
+];
 // Connect to MongoDB
 connectDB();
 
 const app = express();
 const PORT = 3000;
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 // Ensure uploads directory exists
 const uploadDir = path.join(__dirname, 'public', 'uploads');
@@ -40,6 +86,69 @@ try {
     console.error('⚠️ Error setting directory permissions:', error.message);
     // Continue running the app even if permissions fail
 }
+
+// Ensure recipes directory exists
+const recipesDir = path.join(__dirname, 'public', 'images', 'recipes');
+if (!fs.existsSync(recipesDir)) {
+    fs.mkdirSync(recipesDir, { recursive: true });
+    console.log('Created recipes images directory:', recipesDir);
+}
+
+// Add a middleware to handle missing recipe images
+app.use('/images/recipes', (req, res, next) => {
+    const imagePath = path.join(__dirname, 'public', req.url);
+    if (!fs.existsSync(imagePath)) {
+        // Redirect to default image if requested image doesn't exist
+        return res.redirect('/images/recipes/default.jpg');
+    }
+    next();
+});
+
+// Replace the existing meditation image middleware with this:
+app.use('/images/meditation', (req, res, next) => {
+    const imagePath = path.join(__dirname, 'public', req.url);
+    const defaultPath = path.join(__dirname, 'public', 'images', 'meditation', 'default.jpg');
+    
+    if (!fs.existsSync(imagePath)) {
+        if (fs.existsSync(defaultPath)) {
+            res.sendFile(defaultPath);
+        } else {
+            res.status(404).send('Image not found');
+        }
+        return;
+    }
+    next();
+});
+
+// Add after your existing middleware
+app.use('/images/meditation', (req, res, next) => {
+    const imagePath = path.join(__dirname, 'public', req.url);
+    if (!fs.existsSync(imagePath)) {
+        // Use gradient background if image doesn't exist
+        next();
+        return;
+    }
+    next();
+});
+
+// Add this route before your other routes
+app.get('/images/placeholder.png', (req, res) => {
+    const placeholderPath = path.join(__dirname, 'public', 'images', 'placeholder.png');
+    
+    // If placeholder doesn't exist, send a base64 encoded minimal image
+    if (!fs.existsSync(placeholderPath)) {
+        const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mN8/x8AAwMCAO+ip1sAAAAASUVORK5CYII=';
+        const img = Buffer.from(base64Image, 'base64');
+        res.writeHead(200, {
+            'Content-Type': 'image/png',
+            'Content-Length': img.length
+        });
+        res.end(img);
+        return;
+    }
+    
+    res.sendFile(placeholderPath);
+});
 
 // Middleware
 app.use(morgan('dev'));
@@ -382,6 +491,204 @@ app.post('/logout', (req, res) => {
         }
         res.redirect('/login');
     });
+});
+
+// Store meal plans in memory (replace with database in production)
+const mealPlans = new Map();
+
+app.post('/api/meal-plan', async (req, res) => {
+    try {
+        const { recipeId, meal, date } = req.body;
+        const userId = req.session.userId || 'guest';
+        
+        if (!mealPlans.has(userId)) {
+            mealPlans.set(userId, {});
+        }
+        
+        const userMeals = mealPlans.get(userId);
+        userMeals[meal] = recipes.find(r => r.id === recipeId);
+        
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error saving meal plan:', error);
+        res.status(500).json({ success: false, error: 'Failed to save meal plan' });
+    }
+});
+
+// Update nutrition route to include meal plans
+app.get('/nutrition', async (req, res) => {
+    try {
+        let user = null;
+        if (req.session.userId) {
+            user = await User.findById(req.session.userId);
+        }
+        
+        const userId = req.session.userId || 'guest';
+        const userMealPlan = mealPlans.get(userId) || {};
+        
+        res.render('nutrition', {
+            user,
+            mealPlan: userMealPlan,
+            title: 'Nutrition - Fitra'
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.redirect('/home');
+    }
+});
+
+app.get('/recipes', async (req, res) => {
+    try {
+        let user = null;
+        if (req.session.userId) {
+            user = await User.findById(req.session.userId);
+        }
+
+        // Get meal type from query parameter
+        const mealType = req.query.meal || 'breakfast';
+
+        // In a real app, fetch recipes from database
+        const recipes = [
+            {
+                id: 1,
+                name: "Oatmeal Bowl",
+                calories: 350,
+                protein: 12,
+                carbs: 56,
+                fats: 8,
+                time: "15 min",
+                image: "/images/recipes/oatmeal.jpg",
+                category: "breakfast"
+            },
+            // Add more recipes...
+        ];
+
+        res.render('recipes', {
+            user,
+            recipes,
+            mealType,
+            title: 'Healthy Recipes - Fitra'
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.redirect('/nutrition');
+    }
+});
+// ...existing code...
+
+// Remove the duplicate app.post('/api/meal-plan') and replace with these routes
+app.post('/api/meal-plan', async (req, res) => {
+    try {
+        const { recipeId, meal } = req.body;
+        const userId = req.session.userId || 'guest';
+        
+        // Find the recipe
+        const recipe = recipes.find(r => r.id === parseInt(recipeId));
+        if (!recipe) {
+            return res.status(404).json({ 
+                success: false, 
+                error: 'Recipe not found' 
+            });
+        }
+        
+        // Initialize user's meal plan if it doesn't exist
+        if (!mealPlans.has(userId)) {
+            mealPlans.set(userId, {});
+        }
+        
+        // Add the recipe to the meal plan
+        const userMeals = mealPlans.get(userId);
+        userMeals[meal] = recipe;
+        
+        console.log(`Added ${recipe.name} to ${meal} for user ${userId}`);
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error saving meal plan:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Failed to save meal plan' 
+        });
+    }
+});
+
+// Add DELETE route for removing meals
+app.delete('/api/meal-plan', async (req, res) => {
+    try {
+        const { meal } = req.body;
+        const userId = req.session.userId || 'guest';
+        
+        if (!mealPlans.has(userId)) {
+            return res.status(404).json({ 
+                success: false, 
+                error: 'No meal plan found' 
+            });
+        }
+        
+        const userMeals = mealPlans.get(userId);
+        if (userMeals[meal]) {
+            delete userMeals[meal];
+            console.log(`Removed ${meal} for user ${userId}`);
+            res.json({ success: true });
+        } else {
+            res.status(404).json({ 
+                success: false, 
+                error: 'Meal not found' 
+            });
+        }
+    } catch (error) {
+        console.error('Error removing meal:', error);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Failed to remove meal' 
+        });
+    }
+});
+
+app.get('/meditation/player/:category', (req, res) => {
+    const category = req.params.category;
+    const meditationData = {
+        category: category.charAt(0).toUpperCase() + category.slice(1),
+        duration: '15:00',
+        currentSession: 1,
+        totalSessions: 10
+    };
+    res.render('meditationPlayer', meditationData);
+});
+
+app.use('/videos/meditation', (req, res, next) => {
+    const videoPath = path.join(__dirname, 'public', req.url);
+    if (!fs.existsSync(videoPath)) {
+        res.status(404).send('Video not found');
+        return;
+    }
+    next();
+});
+
+// Replace your existing meditation images middleware with this
+app.use('/images/meditation', (req, res, next) => {
+    const imagePath = path.join(__dirname, 'public', req.url);
+    const defaultPath = path.join(__dirname, 'public', 'images', 'meditation', 'default.jpg');
+    
+    // Log request for debugging
+    console.log('Requesting meditation image:', req.url);
+    
+    if (!fs.existsSync(imagePath)) {
+        console.log('Image not found, trying default:', defaultPath);
+        
+        if (fs.existsSync(defaultPath)) {
+            // Send default image
+            return res.sendFile(defaultPath);
+        } else {
+            // If no default image, send gradient fallback
+            return res.status(404).json({
+                error: 'Image not found',
+                gradient: ['#2D46B9', '#F13C77']
+            });
+        }
+    }
+    
+    // If image exists, continue
+    next();
 });
 
 app.listen(PORT, () => {
