@@ -238,7 +238,6 @@ app.post('/login', async (req, res) => {
                 error: 'Invalid password'
             });
         }
-
         // Set session and render home page
         req.session.userId = user._id;
         res.render('home', {
@@ -376,6 +375,9 @@ app.get('/meditation', async (req, res) => {
     }
 });
 
+app.get('/yoga', (req, res) => {
+    res.render('yoga'); // Assuming you have a yoga.ejs template
+});
 // Profile picture upload route
 app.post('/api/upload-profile-pic', upload.single('profilePic'), async (req, res) => {
     try {
@@ -630,6 +632,14 @@ app.use('/images/meditation', (req, res, next) => {
         }
     }
     next();
+});
+
+// In your route handler
+app.get('/universe', (req, res) => {
+    res.render('universe', {
+        user: req.user,
+        activePage: 'meditation'
+    });
 });
 
 app.use('/meditation', meditationRoutes);
