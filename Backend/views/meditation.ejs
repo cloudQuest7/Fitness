@@ -348,71 +348,71 @@
         </div>
 
         <!-- Right Sidebar - Player -->
-        <div class="player-sidebar w-80 p-6 fixed right-0 top-0 h-full hidden lg:block">
+        <div class="player-sidebar w-96 p-6 fixed right-0 top-0 h-full hidden lg:block">
             <div class="h-full flex flex-col">
-                <div class="flex-1">
-                    <h3 class="text-lg font-semibold mb-4">Now Playing</h3>
-                    <!-- Replace the existing right sidebar image container code with this: -->
-                    <div class="aspect-square mb-4 rounded-lg overflow-hidden">
-                        <div id="current-meditation-image-container" class="relative w-full h-full">
-                            <div class="absolute inset-0 image-placeholder"></div>
-                            <img id="current-meditation-image" 
-                                src="/images/meditation/default-meditation.jpg" 
-                                alt="Current meditation"
-                                class="w-full h-full object-cover relative z-10"
-                                onerror="this.onerror=null; this.src='/images/meditation/default-meditation.jpg'; this.parentElement.classList.add('image-error')"/>
-                        </div>
-                    </div>
-                    <h4 id="current-meditation-title" class="font-semibold">Select a meditation</h4>
-                    <p id="current-meditation-author" class="text-sm text-gray-400">Meditation Guide</p>
+            <div class="flex-1">
+                <h3 class="text-lg font-semibold mb-4">Now Playing</h3>
+                <!-- Replace the existing right sidebar image container code with this: -->
+                <div class="aspect-square mb-4 rounded-lg overflow-hidden">
+                <div id="current-meditation-image-container" class="relative w-full h-full">
+                    <div class="absolute inset-0 image-placeholder"></div>
+                    <img id="current-meditation-image" 
+                    src="/images/meditation/default-meditation.jpg" 
+                    alt="Current meditation"
+                    class="w-full h-full object-cover relative z-10"
+                    onerror="this.onerror=null; this.src='/images/meditation/default-meditation.jpg'; this.parentElement.classList.add('image-error')"/>
+                </div>
+                </div>
+                <h4 id="current-meditation-title" class="font-semibold">Select a meditation</h4>
+                <p id="current-meditation-author" class="text-sm text-gray-400">Meditation Guide</p>
 
-                    <!-- Player Controls -->
-                    <div class="mt-8">
-                        <div class="flex items-center justify-center space-x-6 player-controls">
-                            <button class="text-gray-400 hover:text-white" id="shuffle-button">
-                                <i class="fas fa-random"></i>
-                            </button>
-                            <button class="text-gray-400 hover:text-white" id="prev-button">
-                                <i class="fas fa-step-backward"></i>
-                            </button>
-                            <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-105 paused" id="play-pause-button">
-                                <i class="fas fa-play text-black"></i>
-                                <i class="fas fa-pause text-black hidden"></i>
-                            </button>
-                            <button class="text-gray-400 hover:text-white" id="next-button">
-                                <i class="fas fa-step-forward"></i>
-                            </button>
-                            <button class="text-gray-400 hover:text-white" id="repeat-button">
-                                <i class="fas fa-repeat"></i>
-                            </button>
-                        </div>
-
-                        <!-- Progress Bar -->
-                        <div class="mt-6">
-                            <div class="flex justify-between text-xs text-gray-400 mb-2">
-                                <span id="current-time">0:00</span>
-                                <span id="duration-time">0:00</span>
-                            </div>
-                            <div class="progress-bar h-1 rounded-full" id="progress-container">
-                                <div class="progress-fill h-full w-0 rounded-full" id="progress-fill"></div>
-                            </div>
-                        </div>
-
-                        <!-- Volume Control -->
-                        <div class="mt-6 flex items-center space-x-3">
-                            <i class="fas fa-volume-up text-gray-400" id="volume-icon"></i>
-                            <input type="range" class="volume-slider flex-1" min="0" max="100" value="70" id="volume-slider"/>
-                        </div>
-                    </div>
+                <!-- Player Controls -->
+                <div class="mt-8">
+                <div class="flex items-center justify-center space-x-6 player-controls">
+                    <button class="text-gray-400 hover:text-white" id="shuffle-button">
+                    <i class="fas fa-random"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-white" id="prev-button">
+                    <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button class="w-12 h-12 bg-white rounded-full flex items-center justify-center hover:scale-105 paused" id="play-pause-button">
+                    <i class="fas fa-play text-black"></i>
+                    <i class="fas fa-pause text-black hidden"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-white" id="next-button">
+                    <i class="fas fa-step-forward"></i>
+                    </button>
+                    <button class="text-gray-400 hover:text-white" id="repeat-button">
+                    <i class="fas fa-repeat"></i>
+                    </button>
                 </div>
 
-                <!-- Queue -->
+                <!-- Progress Bar -->
                 <div class="mt-6">
-                    <h3 class="text-sm font-semibold mb-3">Next in Queue</h3>
-                    <div id="queue-container" class="space-y-3">
-                        <!-- Queue items will be added here dynamically -->
+                    <div class="flex justify-between text-xs text-gray-400 mb-2">
+                    <span id="current-time">0:00</span>
+                    <span id="duration-time">0:00</span>
+                    </div>
+                    <div class="progress-bar h-1 rounded-full" id="progress-container">
+                    <div class="progress-fill h-full w-0 rounded-full" id="progress-fill"></div>
                     </div>
                 </div>
+
+                <!-- Volume Control -->
+                <div class="mt-6 flex items-center space-x-3">
+                    <i class="fas fa-volume-up text-gray-400" id="volume-icon"></i>
+                    <input type="range" class="volume-slider flex-1" min="0" max="100" value="70" id="volume-slider"/>
+                </div>
+                </div>
+            </div>
+
+            <!-- Queue -->
+            <div class="mt-6">
+                <h3 class="text-sm font-semibold mb-3">Next in Queue</h3>
+                <div id="queue-container" class="space-y-3">
+                <!-- Queue items will be added here dynamically -->
+                </div>
+            </div>
             </div>
         </div>
     </div>

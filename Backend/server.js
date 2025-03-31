@@ -60,7 +60,7 @@ const recipes = [
     }
 ];
 // Connect to MongoDB
-connectDB();
+await connectDB();
 
 const app = express();
 const PORT = 3000;
