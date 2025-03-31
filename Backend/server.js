@@ -205,17 +205,15 @@ app.post('/register', async (req, res) => {
         await User.create({ username, email, password });
         
         // Redirect to login page after successful registration
-        res.json({ 
-            success: true, 
-            redirect: '/login',
-            message: 'Registration successful! Please login.' 
+        res.json({
+            success: true,
+            message: 'Registration successful! Please login.'
         });
-
     } catch (error) {
         console.error('Registration error:', error);
-        res.status(400).json({ 
-            success: false, 
-            message: 'Registration failed' 
+        res.status(400).json({
+            success: false,
+            message: error.message || 'Registration failed'
         });
     }
 });
@@ -450,12 +448,11 @@ app.delete('/api/delete-profile-pic', async (req, res) => {
 
 // Logout route
 app.post('/logout', (req, res) => {
-    req.session.destroy((err) => {
+    req.session.destroy(err => {
         if (err) {
-            return res.status(500).json({ message: 'Could not log out' });
+            console.error('Logout error:', err);
         }
-        res.clearCookie('connect.sid'); // Clear the session cookie
-        res.redirect('/'); // Redirect to landing page
+        res.redirect('/login');
     });
 });
 

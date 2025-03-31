@@ -176,7 +176,70 @@
                 <input type="number" placeholder="Height (cm)" class="w-1/2 p-2 border rounded-md focus:outline-blue-500">
             </div>
         </div>
+
+        <div class="flex justify-end mt-6 align-center">
+            <button onclick="saveSettings()" 
+                    class="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600">
+                Save Changes
+            </button>
+        </div>
     </div>
+    
+
+    <script>
+    async function saveSettings() {
+        const statusDiv = document.getElementById('upload-status');
+        statusDiv.innerHTML = '<span class="text-blue-500">Saving...</span>';
+
+        try {
+            // Collect data from inputs
+            const firstName = document.querySelector('input[placeholder="First Name"]').value;
+            const lastName = document.querySelector('input[placeholder="Last Name"]').value;
+            const email = document.querySelector('input[type="email"]').value;
+            const currentPassword = document.querySelector('input[placeholder="Current Password"]').value;
+            const newPassword = document.querySelector('input[placeholder="New Password"]').value;
+            const weight = document.querySelector('input[placeholder="Weight (kg)"]').value;
+            const height = document.querySelector('input[placeholder="Height (cm)"]').value;
+            const exerciseReminder = document.querySelector('input[type="checkbox"]:nth-of-type(1)').checked;
+            const waterReminder = document.querySelector('input[type="checkbox"]:nth-of-type(2)').checked;
+
+            // Prepare data for submission
+            const settingsData = {
+                firstName,
+                lastName,
+                email,
+                currentPassword,
+                newPassword,
+                weight,
+                height,
+                reminders: {
+                    exercise: exerciseReminder,
+                    water: waterReminder
+                }
+            };
+
+            // Send data to the server
+            const response = await fetch('/api/save-settings', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(settingsData)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                statusDiv.innerHTML = '<span class="text-green-500">Settings saved successfully!</span>';
+            } else {
+                throw new Error(data.message || 'Failed to save settings');
+            }
+        } catch (error) {
+            console.error('Save error:', error);
+            statusDiv.innerHTML = `<span class="text-red-500">${error.message}</span>`;
+        }
+    }
+    </script>
 
 
 </div>
