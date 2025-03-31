@@ -187,24 +187,21 @@ app.get('/register', (req, res) => {
     res.render('register');
 });
 
-// Registration route - redirects to login after successful registration
+// Registration route - add logging
 app.post('/register', async (req, res) => {
     try {
         const { username, email, password } = req.body;
         
-        // Check if user already exists
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'User already exists' 
-            });
-        }
-
         // Create new user
-        await User.create({ username, email, password });
+        const user = await User.create({ username, email, password });
         
-        // Redirect to login page after successful registration
+        // Log registration details
+        console.log('\n=== New User Registration ===');
+        console.log('Username:', username);
+        console.log('Email:', email);
+        console.log('Time:', new Date().toLocaleString());
+        console.log('===========================\n');
+
         res.json({
             success: true,
             message: 'Registration successful! Please login.'
@@ -218,34 +215,37 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Login route - checks credentials and renders home page
+// Login route - add logging
 app.post('/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        
-        // Find user and verify credentials
         const user = await User.findOne({ email });
         
-        if (!user) {
+        if (user && user.password === password) {
+            // Log successful login
+            console.log('\n=== User Login ===');
+            console.log('Username:', user.username);
+            console.log('Email:', user.email);
+            console.log('Time:', new Date().toLocaleString());
+            console.log('=================\n');
+
+            req.session.userId = user._id;
+            res.render('home', {
+                user,
+                username: user.username,
+                email: user.email
+            });
+        } else {
+            // Log failed login attempt
+            console.log('\n=== Failed Login Attempt ===');
+            console.log('Email:', email);
+            console.log('Time:', new Date().toLocaleString());
+            console.log('=========================\n');
+
             return res.status(401).render('login', { 
-                error: 'User not found'
+                error: user ? 'Invalid password' : 'User not found'
             });
         }
-
-        // Check password
-        if (user.password !== password) {
-            return res.status(401).render('login', { 
-                error: 'Invalid password'
-            });
-        }
-        // Set session and render home page
-        req.session.userId = user._id;
-        res.render('home', {
-            user,
-            username: user.username,
-            email: user.email
-        });
-
     } catch (error) {
         console.error('Login error:', error);
         res.status(400).render('login', { 

@@ -79,171 +79,65 @@
     
     <!-- Audio element for the hover sound -->
     <audio id="hoverSound" preload="auto">
-      <source src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js" type="audio/mpeg">
+      <source src="/audio/meditation/universe.mp3" type="audio/mp3">
+      <source src="/audio/meditation/universe.ogg" type="audio/ogg">
+      Your browser does not support the audio element.
     </audio>
     
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const button = document.getElementById('meditationButton');
-        const message = document.getElementById('message');
-        const buttonContainer = document.querySelector('.button-container');
-        let audioContext;
-        let whisperNode;
-        
-        // Synthetic sound generation function
-        function createCelestialSound() {
-          if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-          }
-          
-          // Create oscillator for the hum sound
-          const oscillator = audioContext.createOscillator();
-          oscillator.type = 'sine';
-          oscillator.frequency.setValueAtTime(140, audioContext.currentTime); // Low frequency for deep hum
-          
-          // Create gain node for volume control and fade in/out
-          const gainNode = audioContext.createGain();
-          gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-          gainNode.gain.linearRampToValueAtTime(0.15, audioContext.currentTime + 0.5);
-          gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3);
-          
-          // Add reverb-like effect with convolver node
-          const convolver = audioContext.createConvolver();
-          
-          // Create delay for echo effect
-          const delay = audioContext.createDelay(5.0);
-          delay.delayTime.value = 0.3;
-          
-          const delayGain = audioContext.createGain();
-          delayGain.gain.value = 0.4;
-          
-          // Connect nodes
-          oscillator.connect(gainNode);
-          gainNode.connect(delay);
-          delay.connect(delayGain);
-          delayGain.connect(delay); // Feedback loop for echo
-          gainNode.connect(audioContext.destination);
-          delayGain.connect(audioContext.destination);
-          
-          oscillator.start();
-          oscillator.stop(audioContext.currentTime + 3);
-          
-          return { oscillator, gainNode };
-        }
-        
-        // Function to create synthetic whisper
-        function createWhisper() {
-          if (!audioContext) {
-            audioContext = new (window.AudioContext || window.webkitAudioContext)();
-          }
-          
-          // White noise for whisper effect
-          const whisperNode = audioContext.createBufferSource();
-          const bufferSize = audioContext.sampleRate * 2;
-          const buffer = audioContext.createBuffer(1, bufferSize, audioContext.sampleRate);
-          const data = buffer.getChannelData(0);
-          
-          // Fill buffer with noise
-          for (let i = 0; i < bufferSize; i++) {
-            data[i] = Math.random() * 2 - 1;
-          }
-          
-          whisperNode.buffer = buffer;
-          
-          // Create bandpass filter for whisper-like sound
-          const whisperFilter = audioContext.createBiquadFilter();
-          whisperFilter.type = 'bandpass';
-          whisperFilter.frequency.value = 800;
-          whisperFilter.Q.value = 0.5;
-          
-          // Create gain node for volume
-          const whisperGain = audioContext.createGain();
-          whisperGain.gain.setValueAtTime(0, audioContext.currentTime);
-          whisperGain.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.3); // Very quiet
-          whisperGain.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3);
-          
-          // Connect whisper nodes
-          whisperNode.connect(whisperFilter);
-          whisperFilter.connect(whisperGain);
-          whisperGain.connect(audioContext.destination);
-          
-          return { whisperNode, whisperGain };
-        }
-        
-        // Create ripple effect
-        function createRipple(event) {
-          const ripple = document.createElement('div');
-          ripple.classList.add('button-ripple');
-          buttonContainer.appendChild(ripple);
-          
-          const rect = button.getBoundingClientRect();
-          const size = Math.max(rect.width, rect.height);
-          
-          ripple.style.width = ripple.style.height = `${size}px`;
-          ripple.style.left = `${event.clientX - rect.left - size/2}px`;
-          ripple.style.top = `${event.clientY - rect.top - size/2}px`;
-          
-          setTimeout(() => {
-            ripple.remove();
-          }, 2000);
-        }
-        
-        button.addEventListener('mouseover', function(event) {
-          // Play the celestial sound
-          const sound = createCelestialSound();
-          
-          // Play the whisper after a short delay
-          setTimeout(() => {
-            const whisper = createWhisper();
-            whisper.whisperNode.start();
-            whisper.whisperNode.stop(audioContext.currentTime + 3);
-          }, 500);
-          
-          // Show the message
-          message.style.opacity = '1';
-          message.style.top = '-60px';
-          
-          // Create ripple effect
-          createRipple(event);
-        });
-        
-        button.addEventListener('mouseout', function() {
-          // Hide the message
-          message.style.opacity = '0';
-          message.style.top = '-40px';
-        });
-        
-        button.addEventListener('click', function(event) {
-          // Create a stronger ripple effect on click
-          createRipple(event);
-          
-          // Play a more pronounced sound
-          const sound = createCelestialSound();
-          const gainNode = sound.gainNode;
-          gainNode.gain.cancelScheduledValues(audioContext.currentTime);
-          gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-          gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.5);
-          gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 3);
-        });
-      });
-      
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="tElQRgkR0AXJ2XdZCwUVW";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+document.addEventListener('DOMContentLoaded', function() {
+    const button = document.getElementById('meditationButton');
+    const hoverSound = document.getElementById('hoverSound');
+    let isAudioInitialized = false;
 
-      document.addEventListener('DOMContentLoaded', function() {
-        const sidebar = document.querySelector('.sidebar');
-        const mainContent = document.querySelector('.main-content');
-        
-        if (sidebar) {
-          sidebar.addEventListener('mouseenter', function() {
-            mainContent.classList.add('sidebar-expanded');
-          });
-          
-          sidebar.addEventListener('mouseleave', function() {
-            mainContent.classList.remove('sidebar-expanded');
-          });
+    // Initialize audio on first user interaction
+    document.body.addEventListener('click', function() {
+        if (!isAudioInitialized) {
+            hoverSound.load();
+            isAudioInitialized = true;
         }
-      });
-    </script>
+    }, { once: true });
+
+    // Play custom hover sound
+    function playHoverSound() {
+        try {
+            hoverSound.currentTime = 0; // Reset audio to start
+            hoverSound.volume = 0.3; // Set volume to 30%
+            hoverSound.play()
+                .catch(error => console.error('Audio playback failed:', error));
+        } catch (error) {
+            console.error('Audio playback failed:', error);
+        }
+    }
+
+    // Create ripple effect
+    function createRipple(event) {
+        const ripple = document.createElement('div');
+        ripple.classList.add('button-ripple');
+        button.appendChild(ripple);
+        
+        const rect = button.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        
+        ripple.style.width = ripple.style.height = `${size}px`;
+        ripple.style.left = `${event.clientX - rect.left - size/2}px`;
+        ripple.style.top = `${event.clientY - rect.top - size/2}px`;
+        
+        ripple.addEventListener('animationend', () => ripple.remove());
+    }
+
+    // Event listeners
+    button.addEventListener('mouseenter', function(event) {
+        playHoverSound();
+        createRipple(event);
+    });
+
+    button.addEventListener('click', function(event) {
+        playHoverSound();
+        createRipple(event);
+    });
+});
+</script>
  
   </body>
 </html>
