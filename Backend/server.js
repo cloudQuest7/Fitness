@@ -63,7 +63,8 @@ const recipes = [
 await connectDB();
 
 const app = express();
-const PORT = 3000;
+// const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 
 //lets user to upload files to the server

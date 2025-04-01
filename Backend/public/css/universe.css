@@ -96,13 +96,13 @@
       .purple-background {
         background-color: #aea0ff;
         width: 100vw; /* Full viewport width */
-        height: 400px;
+        height: 700px;
         position: relative;
-        margin-top: 0px; /* Changed from 40px to 0px */
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
+        margin: 0; /* Simplified margin */
+  padding: 0;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
       }
       
       /* Quote section styling */
@@ -171,8 +171,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 400px;
-        max-width: 1440px;
+        height: 600px;
+        max-width: 1540px;
         margin: 0 auto;
       }
 
@@ -303,8 +303,8 @@
       
       .ellipse-image {
         position: absolute;
-        width: 600px;
-        height: 550px;
+        width: 700px;
+        height: 650px;
         object-fit: cover;
         border-radius: 50%;
         top: 50%;
