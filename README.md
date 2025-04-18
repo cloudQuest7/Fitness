@@ -10,7 +10,7 @@
   - Real-time exercise tracking
 
 - **Nutrition Management**
-  - Meal planning
+  - Meal planning 
   - Calorie tracking
   - Dietary recommendations
  
