@@ -13,7 +13,7 @@
   - Meal planning
   - Calorie tracking
   - Dietary recommendations
-
+ 
 - **Personal Dashboard**
   - Achievement tracking
   - Fitness goals
