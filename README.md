@@ -16,7 +16,7 @@
  
 - **Personal Dashboard**
   - Achievement tracking
-  - Fitness goals
+  - Fitness goals 
 
 - **Interactive Features**
   - ✅AI Fitness Assistant
