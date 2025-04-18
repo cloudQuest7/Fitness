@@ -4,7 +4,7 @@
 
 ## ✨ Features
 
-- **Smart Workout Tracking** 
+- **Smart Workout Tracking**   
   - Custom workout plans
   - Progress visualization
   - Real-time exercise tracking
